@@ -6,7 +6,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.io.Serial;
 import java.time.LocalDate;
 
 @Data
@@ -14,7 +13,6 @@ import java.time.LocalDate;
 @Table(name = "Clients")
 public class Client {
     @Id
-    @Serial
     private long id;
 
     private String username;

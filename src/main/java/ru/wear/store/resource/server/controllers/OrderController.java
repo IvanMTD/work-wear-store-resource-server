@@ -4,18 +4,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
+import ru.wear.store.resource.server.models.Client;
 import ru.wear.store.resource.server.models.ClientOrder;
 import ru.wear.store.resource.server.models.Product;
 import ru.wear.store.resource.server.repositories.ClientOrderRepository;
 import ru.wear.store.resource.server.repositories.ClientRepository;
 import ru.wear.store.resource.server.repositories.ProductRepository;
 
-import java.util.List;
-
 @RestController
-@CrossOrigin("http://localhost:8080")
-@RequiredArgsConstructor
 @RequestMapping("/orders")
+@RequiredArgsConstructor
+@CrossOrigin("http://localhost:8080")
 public class OrderController {
 
     private final ClientOrderRepository orderRepository;
@@ -24,15 +23,15 @@ public class OrderController {
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<ClientOrder> saveProduct(@RequestBody Mono<ClientOrder> productMono){
-        System.out.println("Срабатывает контролер");
-        return productMono
-                .flatMap(order -> {
-                  order.addClient(order.getClient());
+    public Mono<ClientOrder> saveProduct(@RequestBody Mono<ClientOrder> orderMono){
+        return orderMono
+                .map(order -> {
+                  ClientOrder clientOrder = new ClientOrder();
+                  clientOrder.addClient(order.getClient() == null? new Client() : order.getClient());
                   for(Product product : order.getProducts()){
-                      order.addProduct(product);
+                      clientOrder.addProduct(product);
                   }
-                  return Mono.just(order);
+                  return clientOrder;
                 })
                 .flatMap(orderRepository::save);
     }

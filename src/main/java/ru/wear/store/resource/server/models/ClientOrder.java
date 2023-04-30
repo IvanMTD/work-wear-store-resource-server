@@ -6,30 +6,32 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @RequiredArgsConstructor
 @Table(name = "ClientOrders")
 public class ClientOrder {
     @Id
-    @Serial
     private long id;
+    private long clientId;
+    private List<Long> productsId = new ArrayList<>();
+
     @Transient
     private Client client;
-    private long clientId;
     @Transient
     private List<Product> products = new ArrayList<>();
-    private Set<Long> productsId;
 
     public void addProduct(Product product){
+        System.out.println(product.getId());
+
         productsId.add(product.getId());
+        System.out.println(productsId);
     }
 
     public void addClient(Client client){
+        System.out.println(client.getId());
         clientId = client.getId();
     }
 }

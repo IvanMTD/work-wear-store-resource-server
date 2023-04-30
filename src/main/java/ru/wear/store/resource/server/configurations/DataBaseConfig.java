@@ -35,8 +35,8 @@ public class DataBaseConfig {
             @Override
             public void run(String... args) throws Exception {
                 System.out.println("Это системное сообщение, оповещает о внедрении внешних зависимостей");
-                /*createTable(connectionFactory);
-                saveClient(clientRepository,encoder);*/
+                //createTable(connectionFactory);
+                //saveClient(clientRepository,encoder);
             }
         };
     }
@@ -82,7 +82,7 @@ public class DataBaseConfig {
                 .createStatement("create table ClientOrders (" +
                         "id long primary key auto_increment," +
                         "client_id long," +
-                        "products_id long array not null)")
+                        "products_id long array)")
                 .execute()
         ).subscribe();
     }
